@@ -28,14 +28,27 @@ Users must provide the following information in order to run this cookbook:
 * `node['chef-contrast-teamserver']['license']` = Valid Contrast license file and its filename
 * `node['chef-contrast-teamserver']['windows_installer']` = Filename of the target Windows TeamServer installer
 * `node['chef-contrast-teamserver']['linux_installer']` = Filename of the target Linux TeamServer installer
+* `node['chef-contrast-teamserver']['teamserver_url']` = Desired URL for TeamServer
+* `node['chef-contrast-teamserver']['port']` = Desired default port for TeamServer
 
 ### Creating the encrypted data bag to store your Contrast Hub username and password
 Since this cookbook requires credentials to log into Contrast Hub in order to download the target TeamServer installer, it utilizes an [encrypted data bag](https://docs.chef.io/secrets.html) to pass your Hub username and password to the target Chef-managed system.
-You can create the encrypted data bag using Chef's `knife` utility.  The general steps to create the encrypted data bag are:
+You can create the encrypted data bag using Chef's `knife` utility.
+
+Please note that this cookbook requires that the data bag be named `contrasthub` and the data bag items must be called `creds` with your Contrast Hub credentials named `username` and `password`.
+
+The general steps to create the encrypted data bag are:
 1. First start by creating your secret key; for example with OpenSSL, run `openssl rand -base64 512 | tr -d '\r\n' > encrypted_data_bag_secret`
 2. Place your new `encrypted_data_bag_secret` under your cookbook's `test/integration/default` directory, which is where this cookbook's `.kitchen.yml` expects it; otherwise, update the `.kitchen.yml` to point to the location of your secret key file
 3. Go into the cookbook's `test/integration/default` directory
-4. Then run `knife data bag create contrasthub creds --sercret-file encrypted_data_bag_secret` -- this will require that your $EDITOR environment variable is set
+4. Then run `knife data bag create contrasthub creds --sercret-file encrypted_data_bag_secret` (this will require that your $EDITOR environment variable is set)
+5. Add data bag items for your Contrast Hub username and password and save the file; for example:
+
+```
+"id": "creds",
+"username": "brian.chau@contrastsecurity.com",
+"password": "<your Contrast Hub password>"
+```
 
 For more information about using encrypted data bags and more, please watch this nice video: https://youtu.be/y4ZAVafd1RI.
 
