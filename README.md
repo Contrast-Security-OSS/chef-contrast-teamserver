@@ -41,7 +41,7 @@ The general steps to create the encrypted data bag are:
 1. First start by creating your secret key; for example with OpenSSL, run `openssl rand -base64 512 | tr -d '\r\n' > encrypted_data_bag_secret`
 2. Place your new `encrypted_data_bag_secret` under your cookbook's `test/integration/default` directory, which is where this cookbook's `.kitchen.yml` expects it; otherwise, update the `.kitchen.yml` to point to the location of your secret key file
 3. Go into the cookbook's `test/integration/default` directory
-4. Then run `knife data bag create contrasthub creds --sercret-file encrypted_data_bag_secret` (this will require that your $EDITOR environment variable is set)
+4. Then run `knife data bag create contrasthub creds --secret-file encrypted_data_bag_secret` (this will require that your $EDITOR environment variable is set)
 5. Add data bag items for your Contrast Hub username and password and save the file; for example:
 
 ```
